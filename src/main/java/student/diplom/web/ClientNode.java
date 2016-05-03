@@ -1,16 +1,15 @@
-package student.diplom.components;
+package student.diplom.web;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Component;
-import student.diplom.components.calculate.AbstractCalculate;
-import student.diplom.components.calculate.IntegralCalculate;
-import student.diplom.components.entities.Param;
-import student.diplom.components.models.IterateParam;
-import student.diplom.components.models.Pack;
-import student.diplom.components.service.ResultService;
+import student.diplom.web.calculate.AbstractCalculate;
+import student.diplom.web.calculate.IntegralCalculate;
+import student.diplom.web.entities.Param;
+import student.diplom.web.models.IterateParam;
+import student.diplom.web.models.Pack;
+import student.diplom.web.models.SetParamWrongException;
+import student.diplom.web.service.ResultService;
 import student.diplom.config.SpringConfiguration;
 
 import java.io.*;
@@ -50,12 +49,12 @@ public class ClientNode {
         for (IterateParam iterateParam : pack.getSetValues()) {
             paramMap.put(iterateParam.getParam(), iterateParam);
         }
+        //AbstractCalculate calculator = new SumCalculate();
         AbstractCalculate calculator = new IntegralCalculate();
-
         try {
             calculator.init(paramMap);
-        } catch (Exception e) {
-            System.out.println("Wrong set params for Calculate");
+        } catch (SetParamWrongException e) {
+            System.out.println("Parameter set not correct");
         }
         in.close();
         out.close();

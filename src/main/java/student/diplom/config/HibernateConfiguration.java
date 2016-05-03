@@ -25,7 +25,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:persistence-postgre.properties" })
-@ComponentScan({ "student.diplom.components" })
+@ComponentScan({ "student.diplom.web" })
 public class HibernateConfiguration {
     @Autowired
     private Environment env;
@@ -38,7 +38,7 @@ public class HibernateConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "student.diplom.components.entities" });
+        em.setPackagesToScan(new String[] { "student.diplom.web.entities" });
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

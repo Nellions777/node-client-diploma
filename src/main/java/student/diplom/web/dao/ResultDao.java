@@ -1,7 +1,7 @@
-package student.diplom.components.dao;
+package student.diplom.web.dao;
 
 import org.springframework.stereotype.Repository;
-import student.diplom.components.entities.Result;
+import student.diplom.web.entities.Result;
 
 import java.util.List;
 

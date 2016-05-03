@@ -1,9 +1,9 @@
-package student.diplom.components.service;
+package student.diplom.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import student.diplom.components.dao.ResultDao;
-import student.diplom.components.entities.Result;
+import student.diplom.web.dao.ResultDao;
+import student.diplom.web.entities.Result;
 
 import java.util.List;
 

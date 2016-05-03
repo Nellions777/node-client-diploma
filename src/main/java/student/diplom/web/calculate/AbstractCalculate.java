@@ -1,6 +1,7 @@
-package student.diplom.components.calculate;
+package student.diplom.web.calculate;
 
-import student.diplom.components.entities.Param;
+import student.diplom.web.entities.Param;
+import student.diplom.web.models.SetParamWrongException;
 
 import java.util.*;
 
@@ -10,7 +11,7 @@ import java.util.*;
 public abstract class AbstractCalculate {
     private Map<Param, ListIterator<Double>> paramMap;
 
-    public void init(Map<Param, ListIterator<Double>> paramMap) {
+    public void init(Map<Param, ListIterator<Double>> paramMap) throws SetParamWrongException {
         this.paramMap = paramMap;
         List<Param> keyList = new LinkedList<Param>(paramMap.keySet());
         ListIterator<Param> keyListIterator = keyList.listIterator();
@@ -18,7 +19,7 @@ public abstract class AbstractCalculate {
         calculate(keyListIterator, mySetValue);
     }
 
-    private void calculate(ListIterator<Param> keyListIterator, Map<Param, Double> setValue) {
+    private void calculate(ListIterator<Param> keyListIterator, Map<Param, Double> setValue) throws SetParamWrongException {
         if (keyListIterator.hasNext()) {
             Param currentParam = keyListIterator.next();
             while (paramMap.get(currentParam).hasNext()) {
@@ -31,13 +32,17 @@ public abstract class AbstractCalculate {
             keyListIterator.previous();
         } else {
             long startTime = System.currentTimeMillis();
-            calculate(setValue);
+            long resultId = calculate(setValue);
             long totalTime = System.currentTimeMillis() - startTime;
+            // TODO: getting typeTaskId or TypeTask.
+            // TypeTaskID = "2" is id "Sum" Task
+            //TypeTask typeTask = typeTaskService.findTaskById(2);
+            //saveResult(resultId, typeTask, totalTime, setValue);
             System.out.println(setValue);
         }
     }
 
-    protected abstract void calculate(Map<Param, Double> setValue);
+    protected abstract long calculate(Map<Param, Double> setValue) throws SetParamWrongException;
 
 
 }

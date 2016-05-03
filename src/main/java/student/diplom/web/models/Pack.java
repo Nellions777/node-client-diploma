@@ -1,4 +1,4 @@
-package student.diplom.components.models;
+package student.diplom.web.models;
 
 import java.io.Serializable;
 import java.util.LinkedList;

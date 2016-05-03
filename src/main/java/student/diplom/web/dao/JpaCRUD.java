@@ -1,4 +1,4 @@
-package student.diplom.components.dao;
+package student.diplom.web.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

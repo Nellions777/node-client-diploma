@@ -1,6 +1,6 @@
-package student.diplom.components.models;
+package student.diplom.web.models;
 
-import student.diplom.components.entities.Param;
+import student.diplom.web.entities.Param;
 
 import java.io.Serializable;
 import java.util.ListIterator;

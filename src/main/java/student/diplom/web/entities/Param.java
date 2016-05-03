@@ -1,4 +1,4 @@
-package student.diplom.components.entities;
+package student.diplom.web.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
