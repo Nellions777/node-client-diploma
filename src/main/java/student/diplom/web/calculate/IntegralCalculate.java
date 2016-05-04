@@ -1,19 +1,31 @@
 package student.diplom.web.calculate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import student.diplom.web.entities.Param;
+import student.diplom.web.entities.Value;
 import student.diplom.web.models.SetParamWrongException;
+import student.diplom.web.service.ParamService;
+import student.diplom.web.service.ResultService;
+import student.diplom.web.service.TypeTaskService;
+import student.diplom.web.service.ValueService;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Андрей on 29.04.2016.
  */
+@Component
 public class IntegralCalculate extends AbstractCalculate {
 
     private int DIV_NUMBER = 100;
+    private long TASK_ID = 1;
 
     @Override
-    public long calculate(Map<Param, Double> setValue) throws SetParamWrongException {
+    public Map<Param, Double> calculate(Map<Param, Double> setValue) throws SetParamWrongException {
         Double a = setValue.get(new Param("a"));
         Double b = setValue.get(new Param("b"));
         Double c = setValue.get(new Param("c"));
@@ -21,13 +33,14 @@ public class IntegralCalculate extends AbstractCalculate {
         if (a == null || b == null || c == null || s == null) {
             throw new SetParamWrongException();
         } else {
-            Double result = calculate(a, b, c, s, DIV_NUMBER);
+            return calculate(a, b, c, s, DIV_NUMBER);
         }
-        long resultId = 0;
-        return resultId;
     }
 
-    public Double calculate(double a, double b, double c, double s, int n) {
+    public Map<Param, Double> calculate(double a, double b, double c, double s, int n) {
+        Map<Param, Double> resultMap = new HashMap<>();
+        List<Param> resultParams = paramService.findCurrentParams(false, TASK_ID);
+        Param resultParam = resultParams.get(0);
         double d = (b - a) / n;
         double result = 0;
         double xm;
@@ -38,6 +51,7 @@ public class IntegralCalculate extends AbstractCalculate {
             ym = c * Math.sin(Math.pow(Math.E, s * xm));
             result += d * ym;
         }
-        return result;
+        resultMap.put(resultParam, result);
+        return resultMap;
     }
 }

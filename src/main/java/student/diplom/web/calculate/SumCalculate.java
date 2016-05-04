@@ -3,6 +3,8 @@ package student.diplom.web.calculate;
 import student.diplom.web.entities.Param;
 import student.diplom.web.models.SetParamWrongException;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,21 +12,26 @@ import java.util.Map;
  */
 public class SumCalculate extends AbstractCalculate {
 
+    private long TASK_ID = 2;
+
+
     @Override
-    public long calculate(Map<Param, Double> setValue) throws SetParamWrongException {
+    public Map<Param, Double> calculate(Map<Param, Double> setValue) throws SetParamWrongException {
         Double g = setValue.get(new Param("g"));
         Double f = setValue.get(new Param("f"));
         Double d = setValue.get(new Param("d"));
         if (g == null || f == null || d == null) {
             throw new SetParamWrongException();
         } else {
-            Double result = calculate(g, f, d);
+            return calculate(g, f, d);
         }
-        long resultId = 0;
-        return resultId;
     }
 
-    public Double calculate(double a, double b, double c) {
-        return a + b + c;
+    public Map<Param, Double> calculate(double a, double b, double c) {
+        Map<Param, Double> resultMap = new HashMap<>();
+        List<Param> resultParams = paramService.findCurrentParams(false, TASK_ID);
+        Param resultParam = resultParams.get(0);
+        resultMap.put(resultParam, a + b + c);
+        return resultMap;
     }
 }

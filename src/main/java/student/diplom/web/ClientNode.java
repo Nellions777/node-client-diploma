@@ -49,8 +49,10 @@ public class ClientNode {
         for (IterateParam iterateParam : pack.getSetValues()) {
             paramMap.put(iterateParam.getParam(), iterateParam);
         }
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
         //AbstractCalculate calculator = new SumCalculate();
-        AbstractCalculate calculator = new IntegralCalculate();
+        //AbstractCalculate calculator = new IntegralCalculate();
+        AbstractCalculate calculator = context.getBean(IntegralCalculate.class);
         try {
             calculator.init(paramMap);
         } catch (SetParamWrongException e) {
@@ -60,11 +62,6 @@ public class ClientNode {
         out.close();
         outStreamSocket.close();
         inStreamSocket.close();
-
-        log.warn("begin...");
-        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
-        ResultService resultService = context.getBean(ResultService.class);
-        System.out.println(resultService.getResults());
 
     }
 }
