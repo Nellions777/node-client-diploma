@@ -64,7 +64,7 @@ public abstract class AbstractCalculate {
 
     private void saverResult(Map<Param, Double> setValue, Map<Param, Double> setResult, long totalTime) {
         Result result = new Result();
-        result.setTask(typeTaskService.find(setValue.keySet().iterator().next().getTypeTask().getId()));
+        result.setTypeTask(typeTaskService.find(setValue.keySet().iterator().next().getTypeTask().getId()));
         result.setTimeTask(totalTime);
         result.setClient(0);
         resultService.save(result);
