@@ -1,67 +1,27 @@
 package student.diplom.web;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import student.diplom.web.calculate.AbstractCalculate;
-import student.diplom.web.calculate.IntegralCalculate;
-import student.diplom.web.entities.Param;
-import student.diplom.web.models.IterateParam;
-import student.diplom.web.models.Pack;
-import student.diplom.web.models.SetParamWrongException;
-import student.diplom.web.service.ResultService;
-import student.diplom.config.SpringConfiguration;
-
+import javax.swing.*;
 import java.io.*;
-import java.net.ConnectException;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.ListIterator;
-import java.util.Map;
 
-public class ClientNode {
+public class ClientNode extends JFrame{
 
     private static final Logger log = Logger.getLogger(ClientNode.class);
 
+    private SettingsPanel settingsPanel;
+
+    public ClientNode (String title) {
+        super(title);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
+        settingsPanel = new SettingsPanel();
+        add(settingsPanel);
+        setVisible(true);
+        setResizable(false);
+    }
+
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        ClientNode clientNode = new ClientNode();
-        int port = 777;
-        String host = "localhost";
-        Socket socket = null;
-        try {
-            socket = new Socket(host, port);
-        } catch (ConnectException e) {
-            System.out.println("Connection is refused");
-            return;
-        }
-        System.out.println("CONNECTED");
-
-        OutputStream outStreamSocket = socket.getOutputStream();
-        InputStream inStreamSocket = socket.getInputStream();
-
-        PrintStream out = new PrintStream(outStreamSocket);
-        ObjectInputStream in = new ObjectInputStream(inStreamSocket);
-
-        out.println("Hello");
-
-        Pack pack = (Pack) in.readObject();
-        Map<Param, ListIterator<Double>> paramMap = new HashMap<>();
-        for (IterateParam iterateParam : pack.getSetValues()) {
-            paramMap.put(iterateParam.getParam(), iterateParam);
-        }
-        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
-        //AbstractCalculate calculator = new SumCalculate();
-        //AbstractCalculate calculator = new IntegralCalculate();
-        AbstractCalculate calculator = context.getBean(IntegralCalculate.class);
-        try {
-            calculator.init(paramMap);
-        } catch (SetParamWrongException e) {
-            System.out.println("Parameter set not correct");
-        }
-        in.close();
-        out.close();
-        outStreamSocket.close();
-        inStreamSocket.close();
-
+        final ClientNode clientNode = new ClientNode("Calculate client");
     }
 }

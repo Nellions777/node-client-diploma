@@ -33,11 +33,11 @@ public class IntegralCalculate extends AbstractCalculate {
         if (a == null || b == null || c == null || s == null) {
             throw new SetParamWrongException();
         } else {
-            return calculate(a, b, c, s, DIV_NUMBER);
+            return function(a, b, c, s, DIV_NUMBER);
         }
     }
 
-    public Map<Param, Double> calculate(double a, double b, double c, double s, int n) {
+    public Map<Param, Double> function(double a, double b, double c, double s, int n) {
         Map<Param, Double> resultMap = new HashMap<>();
         List<Param> resultParams = paramService.findCurrentParams(false, TASK_ID);
         Param resultParam = resultParams.get(0);

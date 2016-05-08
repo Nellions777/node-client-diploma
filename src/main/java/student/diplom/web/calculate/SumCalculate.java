@@ -23,11 +23,11 @@ public class SumCalculate extends AbstractCalculate {
         if (g == null || f == null || d == null) {
             throw new SetParamWrongException();
         } else {
-            return calculate(g, f, d);
+            return function(g, f, d);
         }
     }
 
-    public Map<Param, Double> calculate(double a, double b, double c) {
+    public Map<Param, Double> function(double a, double b, double c) {
         Map<Param, Double> resultMap = new HashMap<>();
         List<Param> resultParams = paramService.findCurrentParams(false, TASK_ID);
         Param resultParam = resultParams.get(0);
