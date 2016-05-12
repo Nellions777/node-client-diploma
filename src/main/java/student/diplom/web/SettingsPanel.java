@@ -35,6 +35,7 @@ public class SettingsPanel extends  JPanel{
     private JTextArea chat;
 
     private Socket socket;
+    private Pack pack = null;
 
     public SettingsPanel() {
         setLayout(new BorderLayout());
@@ -81,6 +82,10 @@ public class SettingsPanel extends  JPanel{
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if(pack != null) {
+                clientPrint("Calculate getted pack, please");
+                return;
+            }
             int port = Integer.parseInt(portField.getText());
             String host = hostField.getText();
             try {
@@ -91,16 +96,12 @@ public class SettingsPanel extends  JPanel{
                 return;
             } catch (UnknownHostException e1) {
                 clientPrint(e1.getMessage());
+                return;
             } catch (IOException e1) {
                 clientPrint(e1.getMessage());
+                return;
             }
             clientPrint("CONNECTED");
-        }
-    }
-    class CalculateClick implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
             OutputStream outStreamSocket = null;
             InputStream inStreamSocket = null;
             try {
@@ -119,8 +120,6 @@ public class SettingsPanel extends  JPanel{
             }
 
             out.println("Hello");
-
-            Pack pack = null;
             try {
                 pack = (Pack) in.readObject();
                 serverPrint(pack.toString());
@@ -129,6 +128,22 @@ public class SettingsPanel extends  JPanel{
             } catch (ClassNotFoundException e1) {
                 clientPrint(e1.getMessage());
             }
+            try {
+                out.close();
+                in.close();
+                outStreamSocket.close();
+                inStreamSocket.close();
+            } catch (IOException e1) {
+                clientPrint(e1.getMessage());
+            }
+
+        }
+    }
+    class CalculateClick implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
             Map<Param, ListIterator<Double>> paramMap = new HashMap<>();
             for (IterateParam iterateParam : pack.getSetValues()) {
                 paramMap.put(iterateParam.getParam(), iterateParam);
@@ -139,19 +154,13 @@ public class SettingsPanel extends  JPanel{
             AbstractCalculate calculator = context.getBean(IntegralCalculate.class);
             try {
                 calculator.init(paramMap);
+                clientPrint("Calculating finished");
             } catch (SetParamWrongException e1) {
                 clientPrint("Parameter set not correct");
             }
-            clientPrint("Calculating finished");
-            try {
-                out.close();
-                in.close();
-                outStreamSocket.close();
-                inStreamSocket.close();
-                startButton.setEnabled(false);
-            } catch (IOException e1) {
-                clientPrint(e1.getMessage());
-            }
+            pack = null;
+            startButton.setEnabled(false);
+
         }
     }
 }
